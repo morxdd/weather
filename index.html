@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather Card</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <main class="weather-card">
+        <div class="search-area">
+            <input type="text" id="search-input" placeholder="請輸入縣市名" autocomplete="off">
+            <select id="location-select">
+                <option value="00">選擇縣市</option>
+                <option value="TaipeiCity">臺北市</option>
+                <option value="NewTaipeiCity">新北市</option>
+                <option value="TaoyuanCity">桃園市</option>
+                <option value="TaichungCity">臺中市</option>
+                <option value="TainanCity">臺南市</option>
+                <option value="KaohsiungCity">高雄市</option>
+                <option value="KeelungCity">基隆市</option>
+                <option value="HsinchuCity">新竹市</option>
+                <option value="ChiayiCity">嘉義市</option>
+                <option value="HsinchuCounty">新竹縣</option>
+                <option value="MiaoliCounty">苗栗縣</option>
+                <option value="ChanghuaCounty">彰化縣</option>
+                <option value="NantouCounty">南投縣</option>
+                <option value="YunlinCounty">雲林縣</option>
+                <option value="ChiayiCounty">嘉義縣</option>
+                <option value="PingtungCounty">屏東縣</option>
+                <option value="YilanCounty">宜蘭縣</option>
+                <option value="HualienCounty">花蓮縣</option>
+                <option value="TaitungCounty">臺東縣</option>
+                <option value="PenghuCounty">澎湖縣</option>
+                <option value="KinmenCounty">金門縣</option>
+                <option value="LienchiangCounty">連江縣</option>
+            </select>
+            <button id="search-btn">🔍</button>
+        </div>
+        <div class="weather-info">
+            <img id="weather-icon" src="weather-img/weather-icons-01-svgrepo-com.svg" alt="weather icon">
+            <h1 id="temperature">24°C</h1>
+            <h2 id="location-name">臺北市</h2>
+            <div class="details">
+                <div class="humidity">
+                    <p class="en-text">68%</p>
+                    <p>濕度</p>
+                </div>
+                <div class="wind-speed">
+                    <p class="en-text">10.29 km/h</p>
+                    <p>風速</p>
+                </div>
+            </div>
+        </div>
+    </main>
+    <script src="01.js" type="module"></script>
+</body>
+
+</html>
