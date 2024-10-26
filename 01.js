@@ -15,6 +15,7 @@ function fetchWeatherData(apiUrl) {
         })
         .catch(error => {
             console.error('發生錯誤：', error);
+            
         })
 }
 // 處理搜尋邏輯
@@ -23,12 +24,15 @@ function handleSearch() {
     console.log(`使用者輸入的縣市名: ${userInput}`);
 
     if (weatherData) {
-        let locationIndex = weatherData.findIndex(location => location.locationName === userInput);
+        let locationIndex = weatherData.findIndex(location => location.locationName.toLowerCase()  === userInput);
         if (weatherData[locationIndex]) {
             console.log(`找到的縣市與索引： ${weatherData[locationIndex].locationName}、[${locationIndex}]`);
             updateDOM(locationIndex);
         } else {
-            alert('請輸入正確縣市名')
+            // alert('請輸入正確縣市名')
+            const locationNameElement = document.getElementById('location-name');
+            locationNameElement.innerText = '請輸入正確縣市名';
+            locationNameElement.style ="color: #e55"
         }
     } else {
         console.error('資料載入失敗或尚未載入');
@@ -38,17 +42,40 @@ function handleSearch() {
 // 更新 DOM 的函式
 function updateDOM(locationIndex){
     const locationNameElement = document.getElementById('location-name');
-    const humidityElement = document.getElementById('humidity');
-    const windSpeedElement = document.getElementById('wind-speed');
+    const weatherTypeElement = document.getElementById('weather-type');
+    const rainProbabilityElement = document.querySelector('#rain-probability .en-text span')
+    const comfortIndexElement = document.querySelector('#comfort-index .en-text');
+    const temperatureElement = document.querySelector('#temperature span');
     const weatherIconElement = document.getElementById('weather-icon');
+    const selectedLocation = weatherData[locationIndex];
+    console.log(temperatureElement);
+    
 
     //顯示目前資料
-    console.log(weatherData[locationIndex]); //當前城市
+    console.log(selectedLocation); //當前城市
+    // console.log(selectedLocation.weatherElement); //當前城市天氣
+    // console.log(selectedLocation.weatherElement[0].time[0].parameter.parameterName); //當前城市天氣
+    // console.log(selectedLocation.weatherElement[1].time[0].parameter.parameterName); //當前降雨機率
+    // console.log(selectedLocation.weatherElement[3].time[0].parameter.parameterName); //當前舒適度
+    console.log(selectedLocation.weatherElement[4].time[0].parameter.parameterName); //當前氣溫
+
+
+    // 將資料封包成物件
+    let selectedLocationInfo = {
+        "weatherType": selectedLocation.weatherElement[0].time[0].parameter.parameterName,
+        "rainProbability": selectedLocation.weatherElement[1].time[0].parameter.parameterName,
+        "comfortIndex": selectedLocation.weatherElement[3].time[0].parameter.parameterName,
+        "temperature": selectedLocation.weatherElement[4].time[0].parameter.parameterName
+    }
+    console.log(selectedLocationInfo.temperature);
     
 
     // 更新 DOM 內容
-    locationNameElement.innerText = weatherData[locationIndex].locationName
-
+    locationNameElement.innerText = selectedLocation.locationName;
+    weatherTypeElement.innerText = selectedLocationInfo.weatherType;
+    rainProbabilityElement.innerText = selectedLocationInfo.rainProbability;
+    comfortIndexElement.innerText = selectedLocationInfo.comfortIndex;
+    temperatureElement.innerText = selectedLocationInfo.temperature;
 }
 
 
@@ -56,6 +83,9 @@ function updateDOM(locationIndex){
 document.addEventListener('DOMContentLoaded', function () {
     fetchWeatherData(apiUrl)
         .then(() => {
+            let locationIndex = 5
+            updateDOM(locationIndex)
+            
             // 綁定搜尋按鈕的事件
             searchBtn.addEventListener('click', function () {
                 handleSearch();
@@ -69,7 +99,11 @@ document.addEventListener('DOMContentLoaded', function () {
             });
         })
         .catch(() => {
+            
             console.error('資料載入失敗');
+            alert('失敗')
         });
 });
+
+// 修改 icon 的邏輯
 

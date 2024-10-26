@@ -3,6 +3,7 @@
     margin: 0;
     font-family: Arial, Helvetica, sans-serif;
     box-sizing: border-box;
+    color: #2a2f3a;
 }
 img {
     width: 200px;
@@ -35,6 +36,9 @@ body {
     margin: 0 0 -20px 0;
 }
 #location-name {
+    margin: 8px 0 20px 0;
+}
+#weather-type {
     margin: 0 0 40px 0;
 }
 .details {
@@ -43,6 +47,11 @@ body {
     width: 100%;
     font-size: 16px;
 }
+.details div{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+} 
 .details .en-text{
     font-size: 20px;
     font-weight: 600;
