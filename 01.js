@@ -10,7 +10,7 @@ function fetchWeatherData(apiUrl) {
         .then(response => response.json())
         .then(data => {
             weatherData = data.records.location || [];
-            console.log('資料已成功抓取:', weatherData);
+            // console.log('資料已成功抓取:', weatherData);
             return weatherData;
         })
         .catch(error => {
@@ -21,12 +21,12 @@ function fetchWeatherData(apiUrl) {
 // 處理搜尋邏輯
 function handleSearch() {
     const userInput = searchInputField.value.trim().toLowerCase();
-    console.log(`使用者輸入的縣市名: ${userInput}`);
+    // console.log(`使用者輸入的縣市名: ${userInput}`);
 
     if (weatherData) {
         let locationIndex = weatherData.findIndex(location => location.locationName.toLowerCase() === userInput);
         if (weatherData[locationIndex]) {
-            console.log(`找到的縣市與索引： ${weatherData[locationIndex].locationName}、[${locationIndex}]`);
+            // console.log(`找到的縣市與索引： ${weatherData[locationIndex].locationName}、[${locationIndex}]`);
             updateDOM(locationIndex);
         } else {
             // alert('請輸入正確縣市名')
@@ -38,6 +38,23 @@ function handleSearch() {
         console.error('資料載入失敗或尚未載入');
     }
 }
+// 選單選擇處理
+function handleSelect() {
+    const locationSelect = document.getElementById('location-select');
+    locationSelect.addEventListener('change', function () {
+        const selectValue = locationSelect.value;
+        console.log(selectValue);
+        if (weatherData) {
+            let locationIndex = selectValue;
+            updateDOM(locationIndex);
+        } else {
+            console.error('資料載入失敗或尚未載入');
+        }
+
+    })
+}
+
+
 
 // 更新 DOM 的函式
 function updateDOM(locationIndex) {
@@ -48,7 +65,7 @@ function updateDOM(locationIndex) {
     const temperatureElement = document.querySelector('#temperature span');
 
     const selectedLocation = weatherData[locationIndex];
-    console.log(temperatureElement);
+    // console.log(temperatureElement);
 
 
     //顯示目前資料
@@ -57,7 +74,7 @@ function updateDOM(locationIndex) {
     // console.log(selectedLocation.weatherElement[0].time[0].parameter.parameterName); //當前城市天氣
     // console.log(selectedLocation.weatherElement[1].time[0].parameter.parameterName); //當前降雨機率
     // console.log(selectedLocation.weatherElement[3].time[0].parameter.parameterName); //當前舒適度
-    console.log(selectedLocation.weatherElement[4].time[0].parameter.parameterName); //當前氣溫
+    // console.log(selectedLocation.weatherElement[4].time[0].parameter.parameterName); //當前氣溫
 
 
     // 將資料封包成物件
@@ -68,7 +85,7 @@ function updateDOM(locationIndex) {
         "comfortIndex": selectedLocation.weatherElement[3].time[0].parameter.parameterName,
         "temperature": selectedLocation.weatherElement[4].time[0].parameter.parameterName
     }
-    console.log(selectedLocationInfo.temperature);
+    // console.log(selectedLocationInfo.temperature);
 
 
     // 更新 DOM 內容
@@ -87,7 +104,8 @@ document.addEventListener('DOMContentLoaded', function () {
     fetchWeatherData(apiUrl)
         .then(() => {
             let locationIndex = 5
-            updateDOM(locationIndex)
+            updateDOM(locationIndex);
+            handleSelect();
 
             // 綁定搜尋按鈕的事件
             searchBtn.addEventListener('click', function () {
@@ -102,7 +120,6 @@ document.addEventListener('DOMContentLoaded', function () {
             });
         })
         .catch(() => {
-
             console.error('資料載入失敗');
         });
 });
@@ -111,8 +128,8 @@ document.addEventListener('DOMContentLoaded', function () {
 function switchWeatherIcon(selectedLocationInfo) {
     const weatherIconElement = document.getElementById('weather-icon');
     if (selectedLocationInfo.weatherType) {
-        console.log(selectedLocationInfo.weatherType);
-        console.log(selectedLocationInfo.weatherTypeNumber);
+        // console.log(selectedLocationInfo.weatherType);
+        // console.log(selectedLocationInfo.weatherTypeNumber);
         const weatherTypeNumber = Number(selectedLocationInfo.weatherTypeNumber);
         switch (weatherTypeNumber) {
             case 1:
@@ -149,6 +166,9 @@ function switchWeatherIcon(selectedLocationInfo) {
                 weatherIconElement.src = "weather-img/wx-icon/11-overcast-occasional-showers.svg";
                 break;
             case 14:
+                weatherIconElement.src = "weather-img/wx-icon/14-overcast-rain.svg";
+                break;
+            case 20:
                 weatherIconElement.src = "weather-img/wx-icon/14-overcast-rain.svg";
                 break;
             default:
